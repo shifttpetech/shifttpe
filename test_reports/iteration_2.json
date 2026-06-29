@@ -1,0 +1,33 @@
+{
+  "summary": "Frontend-only E2E mobile test (viewport 390x844) for ShiftPe iteration 2 — covering bug fix (edge-to-edge tab bar / safe-area) and the 3 new features (dynamic match algorithm, business verification + Pro subscription, referral page). All targeted flows pass. Tab bar bug-fix verified: referral-banner bottom y=772 sits cleanly above tab bar top y=780 (no overlap, 8px gap, viewport 844). Job Details shows '78% match for you' below business name (dynamic match algorithm). Referral banner navigates to /student/referral; copy-code, ref-name, ref-phone, send-referral all functional; invites persist across reload (AsyncStorage). Business dashboard shows upgrade-banner on free plan; opening Create Shift with 2 active jobs surfaces plan-limit-banner and publish-job label switches to 'Upgrade to Post' which routes to subscription. plan-monthly (₹999) and plan-yearly toggle correctly; upgrade-cta activates Pro, redirects to dashboard, upgrade-banner disappears, business profile shows 'ShiftPe Pro' badge and verified checkmark, /business/subscription now renders 'You're on Pro!' state, plan-limit-banner is gone on Create Shift, and a 3rd job can be posted (Active Jobs count increments).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "business/subscription.tsx", "issues": ["Yearly plan card shows ₹799/month but the bottom upgrade-cta on yearly selection shows 'Subscribe · ₹9588/year' (total amount). The spec mentioned ₹799/mo — current implementation is internally consistent (monthly billing label vs yearly total) but may differ from product intent. Low priority."]}
+    ],
+    "react_native_issues": [
+      {"component": "RN-Web shadow* props", "issue": "Console warnings: '\"shadow*\" style props are deprecated. Use \"boxShadow\".' Still emitted across screens. Reference: /app/frontend/src/theme.ts (shadows tokens)"},
+      {"component": "RN-Web pointerEvents prop", "issue": "Console warning: 'props.pointerEvents is deprecated. Use style.pointerEvents'. Reference: /app/frontend/src/components/JobSwipeCard.tsx"}
+    ]
+  },
+  "test_report_links": ["/app/test_reports/iteration_2.json"],
+  "action_items": [
+    "(Optional) Decide whether yearly upgrade-cta should display monthly equivalent (₹799/month) instead of yearly total (₹9588/year) to better match the product spec.",
+    "Migrate shadow* and pointerEvents tokens in /app/frontend/src/theme.ts and JobSwipeCard.tsx to the modern boxShadow / style.pointerEvents APIs to silence RN-Web warnings."
+  ],
+  "critical_code_review_comments": [
+    "useTabContentBottomPadding / useTabBarHeight in /app/frontend/src/hooks/use-layout.ts cleanly centralizes the 64 + insets.bottom calc; tab bar height in both (tabs)/_layout.tsx use the same formula.",
+    "Match algorithm in /app/frontend/src/utils/match.ts is well-weighted (skills 40 / dist 25 / pay 20 / type 10 / avail 5) and is invoked in swipe.tsx (useMemo sort by _match desc) and student/job/[id].tsx (matchPctline).",
+    "addBusinessJob in app-store enforces 2-job free cap and returns {error} which Create Shift surfaces; upgradePlan flips plan='pro' AND verified=true (single source of truth for both PRO badge and verified checkmark).",
+    "Referrals persist via the same AsyncStorage 'shiftpe:state:v1' snapshot — verified by reload."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only)", "frontend": "100% on critical paths (12/12 assertions in iteration_2 run)"},
+  "seed_data_creation": "None. Mocks already include MOCK_BUSINESS_JOBS with bj_1+bj_2 so plan-limit-banner appears on first Create Shift.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Preview URL https://shift-worker-hub.preview.emergentagent.com, viewport 390x844. localStorage.clear() then reload to reset. Onboarding -> tap text 'Skip'. Student happy path: role-student -> phone-input(9876543210) -> login-continue -> otp-input(123456) -> otp-verify -> setup-name -> setup-continue (x4 across the multi-step setup). Match% appears as '<n>% match for you' on /student/job/[id]. Referral testIDs: referral-banner, copy-code, ref-name, ref-phone, send-referral. Business happy path now uses unified setup-name/setup-continue (renamed from biz-name/biz-continue per previous iteration). Subscription testIDs: upgrade-banner, upgrade-cta, plan-monthly, plan-yearly. Create-shift testIDs: biz-fab (tab center), plan-limit-banner, publish-job, job-title. The yearly upgrade-cta label shows total annual (₹9588/year) — only the monthly toggle label matches the exact spec string 'Subscribe · ₹999/month'.",
+  "rca_of_issue": "No new bugs found in iteration 2. All previously reported issues from iteration 1 (business setup testID divergence) have been resolved — setup-name / setup-continue are now used in both /app/frontend/app/student/setup.tsx and /app/frontend/app/business/setup.tsx."
+}

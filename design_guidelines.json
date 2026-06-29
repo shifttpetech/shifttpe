@@ -1,0 +1,221 @@
+{
+  "app_name": "ShiftPe",
+  "personality": "4 Tactile / Playful LIGHT",
+  "personality_one_liner": "A premium, engaging gig marketplace that feels as snappy and rewarding as a modern social app.",
+  "color": {
+    "light": {
+      "surface": "#FFFFFF",
+      "onSurface": "#0F172A",
+      "surfaceSecondary": "#F8FAFC",
+      "onSurfaceSecondary": "#334155",
+      "surfaceTertiary": "#F1F5F9",
+      "onSurfaceTertiary": "#475569",
+      "surfaceInverse": "#0F172A",
+      "onSurfaceInverse": "#FFFFFF",
+      "brand": "#FF3D57",
+      "brandPrimary": "#FF3D57",
+      "onBrandPrimary": "#FFFFFF",
+      "brandSecondary": "#FF6B8C",
+      "onBrandSecondary": "#FFFFFF",
+      "brandTertiary": "#FFE5EA",
+      "onBrandTertiary": "#FF3D57",
+      "accentPurple": "#7B61FF",
+      "onAccentPurple": "#FFFFFF",
+      "success": "#10B981",
+      "onSuccess": "#FFFFFF",
+      "warning": "#F59E0B",
+      "onWarning": "#FFFFFF",
+      "error": "#EF4444",
+      "onError": "#FFFFFF",
+      "info": "#7B61FF",
+      "onInfo": "#FFFFFF",
+      "border": "#E5E7EB",
+      "borderStrong": "#CBD5E1",
+      "divider": "#F1F5F9"
+    },
+    "dark": {
+      "surface": "#0F172A",
+      "onSurface": "#F8FAFC",
+      "surfaceSecondary": "#1E293B",
+      "onSurfaceSecondary": "#CBD5E1",
+      "surfaceTertiary": "#334155",
+      "onSurfaceTertiary": "#94A3B8",
+      "surfaceInverse": "#FFFFFF",
+      "onSurfaceInverse": "#0F172A",
+      "brand": "#FF3D57",
+      "brandPrimary": "#FF3D57",
+      "onBrandPrimary": "#FFFFFF",
+      "brandSecondary": "#FF6B8C",
+      "onBrandSecondary": "#FFFFFF",
+      "brandTertiary": "#4C1D2A",
+      "onBrandTertiary": "#FFB3C1",
+      "accentPurple": "#7B61FF",
+      "onAccentPurple": "#FFFFFF",
+      "success": "#059669",
+      "onSuccess": "#FFFFFF",
+      "warning": "#D97706",
+      "onWarning": "#FFFFFF",
+      "error": "#DC2626",
+      "onError": "#FFFFFF",
+      "info": "#7B61FF",
+      "onInfo": "#FFFFFF",
+      "border": "#334155",
+      "borderStrong": "#475569",
+      "divider": "#1E293B"
+    }
+  },
+  "typography": {
+    "displayFontFamily": "Poppins",
+    "textFontFamily": "Poppins",
+    "scale": {
+      "sm": 12,
+      "base": 14,
+      "lg": 16,
+      "xl": 20,
+      "2xl": 24,
+      "3xl": 32
+    },
+    "weights": {
+      "regular": "400",
+      "medium": "500",
+      "semibold": "500",
+      "bold": "500"
+    },
+    "note": "Font weight capped at 500 across the app per system rules. Use size for hierarchy instead of heavier weights."
+  },
+  "spacing": {
+    "rule": "Generous vertical breathing room. Cards never flush to screen edges. Minimum 56pt tappable heights.",
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "2xl": 32,
+    "3xl": 48
+  },
+  "radius_tokens": {
+    "sm": 6,
+    "md": 12,
+    "lg": 20,
+    "xl": 24,
+    "2xl": 32,
+    "pill": 999
+  },
+  "shadow_tier": "2",
+  "navigation": "bottom_tabs",
+  "icon_set": "Phosphor",
+  "glassmorphism": {
+    "enabled": true,
+    "do_s": [
+      "Bottom tab bar background (when content scrolls behind)",
+      "Floating Action Buttons (FAB)",
+      "Sticky headers over scrolling content",
+      "Featured swipe cards (frosted overlay on imagery)"
+    ],
+    "dont_s": [
+      "Form inputs",
+      "Body content regions",
+      "Small list rows"
+    ]
+  },
+  "platform_libraries": {
+    "glass": {
+      "ios": "expo-glass-effect",
+      "android": "expo-blur",
+      "low_end_android_fallback": "solid surfaceSecondary"
+    },
+    "image": "expo-image",
+    "blur": "expo-blur",
+    "bottom_sheet": "@gorhom/bottom-sheet",
+    "animation": "react-native-reanimated",
+    "gesture": "react-native-gesture-handler",
+    "swipe_cards": "react-native-reanimated and react-native-gesture-handler for fluid Tinder-like swipe physics"
+  },
+  "components": {
+    "PrimaryButton": "Large 56pt height, 'pill' radius, brandPrimary background, centered text. Add overshoot spring on press.",
+    "SecondaryButton": "56pt height, 'pill' radius, surface background, border 1.5pt borderStrong. Used for secondary actions.",
+    "JobSwipeCard": "Full-bleed image card. 85% viewport width, 70% viewport height. Radius 32px. Dark overlay gradient (top to bottom) over image. White text at bottom (Title, Salary, Distance). Floating chip for 'Urgent' at top right.",
+    "MatchPercentageBadge": "Pill shaped, surface background, accentPurple text + spark icon, positioned dynamically on cards.",
+    "FloatingActionButtons": "Large circular buttons below the swipe card. Red cross for Pass (surface background, red icon), Green heart for Like (brandPrimary background, white icon). Size 64x64.",
+    "BottomTabBar": "Glass effect. Floating center primary action (+ Create Shift for Business, or Shifts list for Student) wrapped in a red circle.",
+    "Chip": "Pill radius, surfaceTertiary background. Active state: brandPrimary background with white text."
+  },
+  "screens": [
+    {
+      "name": "Splash",
+      "purpose": "Animated brand entrance",
+      "states": {
+        "loading": "Animated 'S' logo with handshake + clock + speed lines."
+      },
+      "layout": "Full bleed surface layout. Logo centered. 'ShiftPe' wordmark below."
+    },
+    {
+      "name": "Onboarding",
+      "purpose": "Introduce platform to Students and Businesses",
+      "states": {
+        "empty": "Carousel with custom illustrations, brief title, subtitle."
+      },
+      "layout": "Full-bleed illustration per step, text below, persistent Primary CTA sticky at bottom."
+    },
+    {
+      "name": "RoleSelect",
+      "purpose": "User selects Student vs Business",
+      "states": {},
+      "layout": "Two massive touchable cards vertically stacked. Student (Looking for shifts) / Business (Hiring). Active state gets brandPrimary border."
+    },
+    {
+      "name": "Student Home (Swipe)",
+      "purpose": "Tinder-style card stack for gig discovery",
+      "states": {
+        "loading": "Skeleton card centered",
+        "empty": "Illustration: 'No more shifts in your area' + 'Refresh' CTA."
+      },
+      "layout": "Centered Stack. JobSwipeCard at center. Action row (Pass / Like) below the card. Glass BottomTabBar at the very bottom."
+    },
+    {
+      "name": "Job Details",
+      "purpose": "Deep dive into the gig requirements",
+      "states": {},
+      "layout": "Hero image at top with glass back button. Scrollable details area. Sticky Apply CTA pinned to the bottom above safe area."
+    },
+    {
+      "name": "Business Dashboard",
+      "purpose": "Overview of active gigs and applicants",
+      "states": {},
+      "layout": "Metrics grid at top (Active Shifts, New Applicants) with brandTertiary backgrounds. Scrollable list of recent applications below."
+    }
+  ],
+  "haptics": {
+    "SwipeRight": "success",
+    "SwipeLeft": "selection",
+    "Match": "heavy",
+    "PrimaryButtonPress": "medium",
+    "TabSwitch": "light"
+  },
+  "images": {
+    "cafe_job_cover": {
+      "url": "https://images.pexels.com/photos/12155110/pexels-photo-12155110.jpeg",
+      "dark": "https://images.pexels.com/photos/12155110/pexels-photo-12155110.jpeg",
+      "alt": "Modern cafe interior with espresso machine"
+    },
+    "delivery_job_cover": {
+      "url": "https://images.pexels.com/photos/18313598/pexels-photo-18313598.jpeg",
+      "dark": "https://images.pexels.com/photos/18313598/pexels-photo-18313598.jpeg",
+      "alt": "Electric scooter food delivery in city"
+    },
+    "retail_job_cover": {
+      "url": "https://images.pexels.com/photos/8386651/pexels-photo-8386651.jpeg",
+      "dark": "https://images.pexels.com/photos/8386651/pexels-photo-8386651.jpeg",
+      "alt": "Bright retail clothing boutique interior"
+    }
+  },
+  "instructions_to_main_agent": [
+    "CRITICAL: Cap all font weights to 500 max. Do NOT use 600, 700, or 'bold' in styling for Poppins; use larger font sizes to establish visual hierarchy instead.",
+    "Implement the swipe cards using react-native-gesture-handler and react-native-reanimated to ensure 60fps smooth spring physics.",
+    "Always apply a top-to-bottom dark gradient overlay (scrim) on the job cover images so the white text at the bottom is highly readable.",
+    "Use the brandPrimary (#FF3D57) strategically for primary actions and the 'Like' interactions, avoiding overuse to maintain the 'white space' premium feel.",
+    "Do NOT use pure navy or purple for primary buttons; stick to the coral red.",
+    "Use expo-blur for the bottom tab bar and sticky headers to deliver the 'Glass blur' premium Android feel requested.",
+    "For the bottom tab bar, place a distinct floating action button in the center (e.g., wrapped in a brandPrimary circle) overlapping the tab bar."
+  ]
+}
