@@ -42,8 +42,8 @@ export default function Swipe() {
       <View style={styles.header}>
         <ShiftPeLogo size={26} />
         <View style={styles.headerActions}>
-          <Pressable style={styles.iconBtn}><Ionicons name="options-outline" size={20} color={colors.textPrimary} /></Pressable>
-          <Pressable style={styles.iconBtn}><Ionicons name="location-outline" size={20} color={colors.textPrimary} /></Pressable>
+          <Pressable onPress={() => router.push("/student/filters")} style={styles.iconBtn}><Ionicons name="options-outline" size={20} color={colors.textPrimary} /></Pressable>
+          <Pressable onPress={() => router.push("/student/location")} style={styles.iconBtn}><Ionicons name="location-outline" size={20} color={colors.textPrimary} /></Pressable>
           <Pressable onPress={() => router.push("/student/(tabs)/profile")} style={styles.avatarBtn}>
             <View style={styles.avatar}><Ionicons name="person" size={18} color={colors.primary} /></View>
             <View style={styles.dot} />
