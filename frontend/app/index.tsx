@@ -44,7 +44,7 @@ export default function Splash() {
         <View style={styles.logoBig}>
           <Text style={styles.logoS}>S</Text>
         </View>
-        <Text style={styles.brand}>ShiftPe</Text>
+        <Text style={styles.brand}>ShifttPe</Text>
         <Text style={styles.tagline}>Swipe. Work. Earn.</Text>
       </Animated.View>
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, withDelay, withTiming } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
 import { PrimaryButton } from "@/src/components/PrimaryButton";
+import { Confetti } from "@/src/components/Confetti";
 import { MOCK_JOBS } from "@/src/store/app-store";
 import { colors, radius, spacing, typography } from "@/src/theme";
 
@@ -15,6 +16,7 @@ export default function Match() {
   const { jobId } = useLocalSearchParams<{ jobId: string }>();
   const router = useRouter();
   const job = MOCK_JOBS.find(j => j.id === jobId) || MOCK_JOBS[0];
+  const [showConfetti, setShowConfetti] = useState(true);
 
   const s = useSharedValue(0.2);
   const o = useSharedValue(0);
@@ -30,6 +32,7 @@ export default function Match() {
   return (
     <View style={{ flex: 1 }}>
       <LinearGradient colors={[colors.primary, "#E62E47", colors.primaryDark]} style={StyleSheet.absoluteFill} />
+      <Confetti active={showConfetti} count={80} onComplete={() => setShowConfetti(false)} />
       {[...Array(8)].map((_, i) => (
         <View key={i} style={[styles.spark, { top: 80 + (i * 70) % 600, left: (i * 80) % 300, opacity: 0.2 }]} />
       ))}

@@ -4,18 +4,24 @@ import { useRouter } from "expo-router";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { Chip } from "@/src/components/Chip";
-import { MOCK_JOBS, useApp } from "@/src/store/app-store";
+import { MOCK_SHIFTS } from "@/src/data/shifts";
 import { colors, radius, spacing, typography } from "@/src/theme";
 
-const TABS = ["Applied", "Accepted", "Completed", "Cancelled"] as const;
+const TABS = ["Upcoming", "In Progress", "Completed", "Cancelled"] as const;
+
+const statusMap: Record<string, string> = {
+  "Upcoming": "upcoming",
+  "In Progress": "in_progress",
+  "Completed": "completed",
+  "Cancelled": "cancelled",
+};
 
 export default function Shifts() {
-  const { myShifts } = useApp();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const [tab, setTab] = useState<typeof TABS[number]>("Applied");
+  const [tab, setTab] = useState<typeof TABS[number]>("Upcoming");
 
-  const filtered = myShifts.filter(s => s.status === tab.toLowerCase());
+  const filtered = MOCK_SHIFTS.filter(s => s.status === statusMap[tab]);
 
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>
@@ -27,8 +33,8 @@ export default function Shifts() {
       <View style={styles.chipsWrap}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chipsRow}>
           {TABS.map(t => {
-            const count = myShifts.filter(s => s.status === t.toLowerCase()).length;
-            return <Chip key={t} label={`${t}${count > 0 ? ` · ${count}` : ""}`} active={tab === t} onPress={() => setTab(t)} testID={`shift-tab-${t.toLowerCase()}`} />;
+            const count = MOCK_SHIFTS.filter(s => s.status === statusMap[t]).length;
+            return <Chip key={t} label={`${t}${count > 0 ? ` · ${count}` : ""}`} active={tab === t} onPress={() => setTab(t)} testID={`shift-tab-${t.toLowerCase().replace(' ', '-')}`} />;
           })}
         </ScrollView>
       </View>
@@ -38,30 +44,46 @@ export default function Shifts() {
         data={filtered}
         keyExtractor={(s) => s.id}
         renderItem={({ item }) => {
-          const job = MOCK_JOBS.find(j => j.id === item.jobId);
-          if (!job) return null;
+          // Navigate to appropriate screen based on status
+          const handlePress = () => {
+            if (item.status === 'upcoming') {
+              router.push({ pathname: "/student/upcoming-shift", params: { id: item.id } } as any);
+            } else if (item.status === 'in_progress') {
+              router.push({ pathname: "/student/shift-running", params: { id: item.id } } as any);
+            } else {
+              router.push({ pathname: "/student/shift/[id]", params: { id: item.id } } as any);
+            }
+          };
+          
           return (
-            <Pressable onPress={() => router.push({ pathname: "/student/job/[id]", params: { id: job.id } })} style={styles.card}>
+            <Pressable onPress={handlePress} style={styles.card}>
               <View style={styles.timelineCol}>
                 <View style={[styles.dot, { backgroundColor: statusColor(item.status) }]} />
                 <View style={styles.line} />
               </View>
               <View style={{ flex: 1, gap: 4 }}>
                 <View style={styles.cardHeader}>
-                  <Text style={styles.bizName}>{job.business}</Text>
+                  <Text style={styles.bizName}>{item.businessName}</Text>
                   <View style={[styles.statusBadge, { backgroundColor: statusBg(item.status) }]}>
                     <Text style={[styles.statusText, { color: statusColor(item.status) }]}>{tab}</Text>
                   </View>
                 </View>
-                <Text style={styles.jobTitle}>{job.title}</Text>
+                <Text style={styles.jobTitle}>{item.jobTitle}</Text>
+                <View style={styles.metaRow}>
+                  <Ionicons name="calendar-outline" size={14} color={colors.textTertiary} />
+                  <Text style={styles.meta}>{item.date} · {item.startTime}</Text>
+                </View>
                 <View style={styles.metaRow}>
                   <Ionicons name="time-outline" size={14} color={colors.textTertiary} />
-                  <Text style={styles.meta}>{job.shiftTime}</Text>
+                  <Text style={styles.meta}>{item.duration}</Text>
                 </View>
                 <View style={styles.metaRow}>
                   <Ionicons name="cash-outline" size={14} color={colors.primary} />
-                  <Text style={[styles.meta, { color: colors.primary, fontWeight: typography.weightMedium }]}>₹{job.pay}{job.payUnit}</Text>
+                  <Text style={[styles.meta, { color: colors.primary, fontWeight: typography.weightMedium }]}>₹{item.totalEarning}</Text>
                 </View>
+              </View>
+              <View style={styles.arrowBtn}>
+                <Ionicons name="chevron-forward" size={18} color={colors.textTertiary} />
               </View>
             </Pressable>
           );
@@ -69,7 +91,7 @@ export default function Shifts() {
         ListEmptyComponent={
           <View style={styles.empty}>
             <View style={styles.emptyIcon}><Ionicons name="briefcase-outline" size={32} color={colors.textTertiary} /></View>
-            <Text style={styles.emptyTitle}>No {tab.toLowerCase()} shifts yet</Text>
+            <Text style={styles.emptyTitle}>No {tab.toLowerCase()} shifts</Text>
             <Text style={styles.emptyBody}>Start swiping to apply for jobs near you.</Text>
           </View>
         }
@@ -79,10 +101,10 @@ export default function Shifts() {
 }
 
 function statusColor(s: string) {
-  return s === "applied" ? colors.warning : s === "accepted" ? colors.primary : s === "completed" ? colors.success : colors.danger;
+  return s === "upcoming" ? colors.warning : s === "in_progress" ? colors.primary : s === "completed" ? colors.success : colors.danger;
 }
 function statusBg(s: string) {
-  return s === "applied" ? colors.warningSoft : s === "accepted" ? colors.primaryTint : s === "completed" ? colors.successSoft : colors.dangerSoft;
+  return s === "upcoming" ? colors.warningSoft : s === "in_progress" ? colors.primaryTint : s === "completed" ? colors.successSoft : colors.dangerSoft;
 }
 
 const styles = StyleSheet.create({
@@ -107,4 +129,5 @@ const styles = StyleSheet.create({
   emptyIcon: { width: 64, height: 64, borderRadius: 32, backgroundColor: colors.surfaceSoft, alignItems: "center", justifyContent: "center" },
   emptyTitle: { color: colors.textPrimary, fontSize: 18, fontWeight: typography.weightMedium },
   emptyBody: { color: colors.textSecondary, fontSize: typography.bodySm, textAlign: "center" },
+  arrowBtn: { width: 32, height: 32, borderRadius: 16, backgroundColor: colors.surfaceSoft, alignItems: "center", justifyContent: "center", alignSelf: "center" },
 });

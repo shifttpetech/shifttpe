@@ -13,11 +13,13 @@ export default function Profile() {
   const completed = myShifts.filter(s => s.status === "completed").length;
 
   const items = [
+    { icon: "wallet-outline", label: "My Wallet", route: "/student/wallet", highlight: true },
     { icon: "gift-outline", label: `Refer & Earn${referralEarnings > 0 ? ` · ₹${referralEarnings}` : ""}`, route: "/student/referral" },
     { icon: "notifications-outline", label: "Notifications", route: "/student/notifications" },
     { icon: "settings-outline", label: "Settings", route: "/student/settings" },
     { icon: "help-circle-outline", label: "Help & Support" },
-    { icon: "document-text-outline", label: "Terms & Privacy" },
+    { icon: "document-text-outline", label: "Terms & Conditions", route: "/student/terms" },
+    { icon: "shield-checkmark-outline", label: "Privacy Policy", route: "/privacy-policy" },
   ];
 
   const doLogout = async () => {
@@ -61,10 +63,12 @@ export default function Profile() {
         </Section>
 
         <View style={styles.menu}>
-          {items.map((it) => (
+          {items.map((it: any) => (
             <Pressable key={it.label} onPress={() => it.route && router.push(it.route as any)} style={styles.menuItem}>
-              <View style={styles.menuIcon}><Ionicons name={it.icon as any} size={20} color={colors.textPrimary} /></View>
-              <Text style={styles.menuLabel}>{it.label}</Text>
+              <View style={[styles.menuIcon, it.highlight && { backgroundColor: colors.primaryTint }]}>
+                <Ionicons name={it.icon as any} size={20} color={it.highlight ? colors.primary : colors.textPrimary} />
+              </View>
+              <Text style={[styles.menuLabel, it.highlight && { color: colors.primary }]}>{it.label}</Text>
               <Ionicons name="chevron-forward" size={18} color={colors.textTertiary} />
             </Pressable>
           ))}

@@ -54,6 +54,8 @@ export default function BusinessProfile() {
           <MenuItem icon="notifications-outline" label="Notifications" onPress={() => router.push("/business/notifications")} />
           <MenuItem icon="settings-outline" label="Settings" onPress={() => router.push("/student/settings")} />
           <MenuItem icon="help-circle-outline" label="Help & Support" />
+          <MenuItem icon="document-text-outline" label="Terms & Conditions" onPress={() => router.push('/business/terms' as any)} />
+          <MenuItem icon="shield-checkmark-outline" label="Privacy Policy" onPress={() => router.push('/privacy-policy' as any)} />
           <Pressable testID="biz-logout" onPress={doLogout} style={[styles.menuItem, { borderTopWidth: 1, borderTopColor: colors.divider }]}>
             <View style={[styles.menuIcon, { backgroundColor: colors.dangerSoft }]}><Ionicons name="log-out-outline" size={20} color={colors.danger} /></View>
             <Text style={[styles.menuLabel, { color: colors.danger }]}>Logout</Text>
